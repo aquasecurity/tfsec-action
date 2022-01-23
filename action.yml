@@ -1,0 +1,36 @@
+name: "Run tfsec"
+description: "Runs tfsec and ouputs any failures"
+author: "owen.rumney@aquasec.com"
+
+inputs:
+  working_directory:
+    required: false
+    description: |
+      Directory to run the action on, from the repo root.
+      Default is . ( root of the repository)
+    default: "."
+  version:
+    required: false
+    description: The version of tfsec to use, defaults to latest
+    default: latest
+  format:
+    required: false
+    description: the format of the output
+    default: default
+  additional_args:
+    required: false
+    description: |
+      Space seperated args specified here will be added during tfsec execution.
+      (eg. --force-all-dirs --verbose)
+  soft_fail:
+    required: false
+    description: If set to `true` the action step won't break the  build
+outputs:
+  tfsec-return-code:
+    description: "tfsec command return code"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+branding:
+  icon: "git-pull-request"
+  color: "purple"
