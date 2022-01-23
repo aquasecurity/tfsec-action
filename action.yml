@@ -1,4 +1,4 @@
-name: "tfsec"
+name: "tfsec action"
 description: "Runs tfsec and outputs any failures"
 author: "owen.rumney@aquasec.com"
 
