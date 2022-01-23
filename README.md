@@ -15,7 +15,7 @@ on:
   push:
     branches:
       - main
-    pull_request:
+  pull_request:
 jobs:
   tfsec:
     name: tfsec
@@ -54,7 +54,7 @@ on:
   push:
     branches:
       - main
-    pull_request:
+  pull_request:
 jobs:
   tfsec:
     name: tfsec
