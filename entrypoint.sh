@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+set -xe
 
 TFSEC_VERSION="latest"
 if [ "$INPUT_VERSION" != "latest" ]; then
