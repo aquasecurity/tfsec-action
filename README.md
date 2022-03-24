@@ -66,7 +66,7 @@ jobs:
       - name: tfsec
         uses: aquasecurity/tfsec-action@v1.0.0
         with:
-          - soft_fail: true
+          soft_fail: true
 
 ```
 
