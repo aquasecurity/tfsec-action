@@ -25,6 +25,11 @@ inputs:
   soft_fail:
     required: false
     description: If set to `true` the action step won't break the  build
+  github_token:
+    description: |
+      GitHub token used for making authenticated requests to the GitHub API,
+      which helps avoid rate limiting
+    required: false
 outputs:
   tfsec-return-code:
     description: "tfsec command return code"
