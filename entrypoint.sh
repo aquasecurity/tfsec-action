@@ -13,7 +13,7 @@ else
   TFSEC_VERSION="latest"
 fi
 
-function get_release_assets {
+function get_release_assets() {
   repo="$1"
   version="$2"
   args=(
@@ -21,10 +21,17 @@ function get_release_assets {
     --header "Accept: application/vnd.github+json"
   )
   [ -n "${INPUT_GITHUB_TOKEN}" ] && args+=(--header "Authorization: Bearer ${INPUT_GITHUB_TOKEN}")
-  curl "${args[@]}" "https://api.github.com/repos/${repo}/releases/${version}" | jq '.assets[] | { name: .name, download_url: .browser_download_url }'
+  api_request="$(curl -sfS "${args[@]}" "https://api.github.com/repos/${repo}/releases/${version}")"
+
+  if [[ $? != 0 ]]; then
+    echo "The request to the GitHub API was likely rate-limited; consider setting a GITHUB_TOKEN to prevent this" >&2
+    exit 1
+  fi
+
+  echo "${api_request}" | jq '.assets[] | { name: .name, download_url: .browser_download_url }'
 }
 
-function install_release {
+function install_release() {
   repo="$1"
   version="$2"
   binary="$3-linux-amd64"
