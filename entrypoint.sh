@@ -3,7 +3,7 @@
 set -xe
 
 if [ -z "${INPUT_GITHUB_TOKEN}" ] ; then
-  echo "Consider setting a GITHUB_TOKEN to prevent GitHub api rate limits." >&2
+  echo "::notice title=GitHub API token::Consider setting a GITHUB_TOKEN to prevent GitHub api rate limits"
 fi
 
 TFSEC_VERSION=""
@@ -21,14 +21,13 @@ function get_release_assets() {
     --header "Accept: application/vnd.github+json"
   )
   [ -n "${INPUT_GITHUB_TOKEN}" ] && args+=(--header "Authorization: Bearer ${INPUT_GITHUB_TOKEN}")
-  api_request="$(curl -sfS "${args[@]}" "https://api.github.com/repos/${repo}/releases/${version}")"
 
-  if [[ $? != 0 ]]; then
-    echo "The request to the GitHub API was likely rate-limited; consider setting a GITHUB_TOKEN to prevent this" >&2
+  if ! curl --fail-with-body -sS "${args[@]}" "https://api.github.com/repos/${repo}/releases/${version}"; then
+    echo "::error title=GitHub API request failure::The request to the GitHub API was likely rate-limited. Set a GITHUB_TOKEN to prevent this"
     exit 1
+  else
+    curl "${args[@]}" "https://api.github.com/repos/${repo}/releases/${version}" | jq '.assets[] | { name: .name, download_url: .browser_download_url }'
   fi
-
-  echo "${api_request}" | jq '.assets[] | { name: .name, download_url: .browser_download_url }'
 }
 
 function install_release() {

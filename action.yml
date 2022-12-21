@@ -7,7 +7,7 @@ inputs:
     required: false
     description: |
       Directory to run the action on, from the repo root.
-      Default is . ( root of the repository)
+      Default is . (root of the repository)
     default: "."
   version:
     required: false
@@ -20,7 +20,7 @@ inputs:
   additional_args:
     required: false
     description: |
-      Space seperated args specified here will be added during tfsec execution.
+      Space separated args specified here will be added during tfsec execution.
       (eg. --force-all-dirs --verbose)
   soft_fail:
     required: false
