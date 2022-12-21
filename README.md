@@ -38,11 +38,13 @@ There are a number of optional inputs that can be used in the `with:` block.
 
 **version** - the version of tfsec to use, defaults to `latest`
 
-**format*** Default format can be overridden to any of the following - [json,csv,checkstyle,junit,sarif]
+**format** - Default format can be overridden to any of the following - [json,csv,checkstyle,junit,sarif]
 
 **additional_args** - any additional arguments you want to have passed to tfsec
 
 **soft_fail** - set to `true` if you dont want the action to break the build
+
+**github_token** - a GitHub token to be used when calling the GitHub API, which helps in avoiding rate-limiting
 
 ### tfsec_vars
 
