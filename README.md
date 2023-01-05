@@ -72,3 +72,13 @@ jobs:
 
 ```
 
+## Open Source Attribution
+
+- bash: [GPL 3.0 or later](https://www.gnu.org/licenses/gpl-3.0.html)
+- curl: [curl license](https://curl.se/docs/copyright.html)
+- git: [GPL 2.0 or later](https://github.com/git/git/blob/master/COPYING)
+- jq: [MIT](https://github.com/stedolan/jq/blob/master/COPYING) 
+
+## License
+
+[MIT License](https://github.com/nkuik/tfsec-action/blob/master/LICENSE)
