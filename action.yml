@@ -24,18 +24,55 @@ inputs:
       (eg. --force-all-dirs --verbose)
   soft_fail:
     required: false
-    description: If set to `true` the action step won't break the  build
-  github_token:
-    description: |
-      GitHub token used for making authenticated requests to the GitHub API,
-      which helps avoid rate limiting
+    description: If set to `true` the action step won't break the build
+  install:
     required: false
+    description: If set to `true` the action installs tf-sec
+    default: "true"
+  run:
+    required: false
+    description: If set to `true` the action runs tf-sec
+    default: "true"
+  cache:
+    required: false
+    description: If set to `true` the action caches tf-sec
+    default: "true"
+  debug:
+    required: false
+    description: If set to `true` the action outputs debug
+    default: "false"
 outputs:
   tfsec-return-code:
-    description: "tfsec command return code"
+    value: ${{ steps.tfsec.outputs.EXIT_CODE }}
+    description: "tfsec command exit code"
 runs:
-  using: "docker"
-  image: "Dockerfile"
+  using: composite
+  steps:
+    - name: Install tfsec
+      if: ${{ inputs.install != 'false' }}
+      shell: bash
+      run: "$GITHUB_ACTION_PATH/src/install.sh"
+      env:
+        INPUT_DEBUG: ${{inputs.debug}}
+        INPUT_CACHE: ${{inputs.cache}}
+        INPUT_VERSION: ${{inputs.version}}
+
+    - name: Run tfsec
+      if: ${{ inputs.run != 'false' }}
+      shell: bash
+      id: tfsec
+      run: |
+        set +e
+        tfsec --format="${INPUT_FORMAT}" ${INPUT_SOFT_FAIL:+--soft-fail} ${TFSEC_ARGS_OPTION} "${INPUT_WORKING_DIRECTORY}"
+        EXIT_CODE=$?
+        echo "EXIT_CODE=$EXIT_CODE" >> $GITHUB_OUTPUT
+        exit $EXIT_CODE
+      env:
+        INPUT_FORMAT: ${{inputs.format}}
+        INPUT_SOFT_FAIL: ${{inputs.soft_fail}}
+        INPUT_WORKING_DIRECTORY: ${{inputs.working_directory}}
+        TFSEC_ARGS_OPTION: ${{inputs.additional_args}}
+
 branding:
   icon: "git-pull-request"
   color: "purple"

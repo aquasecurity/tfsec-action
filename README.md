@@ -44,7 +44,13 @@ There are a number of optional inputs that can be used in the `with:` block.
 
 **soft_fail** - set to `true` if you dont want the action to break the build
 
-**github_token** - a GitHub token to be used when calling the GitHub API, which helps in avoiding rate-limiting
+**install** - set to `false` if you want skip the install step
+
+**run** - set to `false` if you want skip the run step
+
+**cache** - set to `false` if you want to disable the installation cache
+
+**debug** - set to `true` if you want debug output for the installation task
 
 ### tfsec_vars
 

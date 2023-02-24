@@ -1,0 +1,41 @@
+env:
+  RUNNER_DEBUG: 1
+
+name: "build-test"
+on: # rebuild any PRs and main branch changes
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test skip cache
+        uses: ./
+        with:
+          debug: true
+          cache: false
+          run: false
+      - name: Test Install with cache
+        uses: ./
+        with:
+          run: false
+      - name: Test run
+        uses: ./
+        with:
+          install: false
+      - name: Get the tfsec version
+        run: tfsec --version
+      - name: Test Install with version
+        uses: ./
+        id: tfsec
+        with:
+          version: v1.28.0
+      - name: echo return code
+        run: echo ${{ steps.tfsec.outputs.tfsec-return-code }}
